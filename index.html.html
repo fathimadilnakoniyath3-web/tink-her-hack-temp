@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyvara Boutique</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+        }
+        
+        .screen {
+            display: none;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        h1 {
+            color: #fff;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            background: #ff4081;
+            color: white;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        input,
+        select {
+            padding: 10px;
+            width: 220px;
+            margin: 8px;
+            border-radius: 6px;
+            border: none;
+        }
+        
+        .card {
+            background: #1f1f1f;
+            padding: 15px;
+            margin: 10px auto;
+            width: 260px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- WELCOME -->
+    <div class="screen active" id="welcome">
+        <h1>Zyvara Boutique</h1>
+        <h2>Welcome</h2>
+        <p><i>"Wear the Future"</i></p>
+        <button onclick="show('login')">Enter</button>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="screen" id="login">
+        <h1>Login</h1>
+        <input type="email" placeholder="Email"><br>
+        <input type="password" placeholder="Password"><br>
+        <button onclick="show('home')">Login</button>
+    </div>
+
+    <!-- HOME -->
+    <div class="screen" id="home">
+        <h1>Home Page</h1>
+
+        <div class="card">➕ Add Measurement (📏 measure scale picture)</div>
+        <div class="card">🛍 Shopping Covers Picture</div>
+        <div class="card">📊 Compare Brand Size</div>
+        <div class="card">📈 Fit History</div>
+
+        <button onclick="show('measurement')">Go to Measurement</button>
+    </div>
+
+    <!-- MEASUREMENT SCREEN -->
+    <div class="screen" id="measurement">
+        <h1>Measurement Screen</h1>
+
+        <input id="height" placeholder="Height (cm)"><br>
+        <input id="weight" placeholder="Weight (kg)"><br>
+        <input id="chest" placeholder="Chest (cm)"><br>
+        <input id="waist" placeholder="Waist (cm)"><br>
+        <input id="hip" placeholder="Hip (cm)"><br>
+
+        <p>Unit: CM (auto conversion ready)</p>
+
+        <button onclick="validateMeasurements()">Save Securely</button>
+    </div>
+
+    <!-- SIZE PREDICTION -->
+    <div class="screen" id="prediction">
+        <h1>Size Prediction</h1>
+
+        <p id="result"></p>
+
+        <p>Size Table:</p>
+        <p>S (34-36) | M (37-39) | L (40-42) | XL (43-45)</p>
+        <p>Pant: 28-29 / 30-31 / 32-33 / 34-36</p>
+
+        <button onclick="show('brand')">Brand Comparison</button>
+    </div>
+
+    <!-- BRAND COMPARISON -->
+    <div class="screen" id="brand">
+        <h1>Brand Comparison</h1>
+
+        <input placeholder="Brand Name"><br>
+        <input placeholder="Dress Type"><br>
+
+        <p>Best Size Match: <b>M (Example)</b></p>
+        <p>Fit Warning: <b>Perfect Fit</b></p>
+
+        <button onclick="show('thankyou')">Finish</button>
+    </div>
+
+    <!-- THANK YOU -->
+    <div class="screen" id="thankyou">
+        <h1>Thank You ❤️</h1>
+        <p>Thanks for using Zyvara Boutique</p>
+    </div>
+
+    <script>
+        function show(id) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function validateMeasurements() {
+            let chest = parseInt(document.getElementById("chest").value);
+
+            if (isNaN(chest)) {
+                alert("Error: Please enter valid measurements.");
+                return;
+            }
+
+            let size = "",
+                confidence = "";
+
+            if (chest >= 34 && chest <= 36) {
+                size = "S";
+                confidence = "90%";
+            } else if (chest >= 37 && chest <= 39) {
+                size = "M";
+                confidence = "92%";
+            } else if (chest >= 40 && chest <= 42) {
+                size = "L";
+                confidence = "88%";
+            } else if (chest >= 43 && chest <= 45) {
+                size = "XL";
+                confidence = "85%";
+            } else {
+                size = "XXL";
+                confidence = "70%";
+            }
+
+            document.getElementById("result").innerHTML =
+                "Best Size: <b>" + size + "</b><br>Confidence: " + confidence +
+                "<br>Alternative Size: " + (size === "M" ? "L" : "M");
+
+            show('prediction');
+        }
+    </script>
+
+</body>
+
+</html>
